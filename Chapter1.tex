@@ -1,0 +1,107 @@
+\setcounter{secnumdepth}{3}
+\titlespacing*{\chapter}{0pt}{-0.1cm}{1cm}
+\titleformat{\chapter}[display]
+  {\bfseries\LARGE}  
+  {Phần~\thechapter}{0pt}{\raggedright}
+
+
+\chapter{Phân công công việc}
+
+\section{Phân công chi tiết}
+\begin{table}[H]
+\centering
+\caption{Phân công công việc các thành viên}
+
+\renewcommand{\arraystretch}{1.6}
+
+\begin{tabular}{|m{5cm}|m{9cm}|c|}
+\hline
+\textbf{Thành viên} & \textbf{Công việc được giao} & \textbf{Hoàn thành} \\
+\hline
+
+\raggedright \textbf{Nguyễn Nhựt Huy} &
+\begin{itemize}[leftmargin=*, noitemsep]
+    \item Quản lý repository nhóm
+    \item Cài đặt ground KB
+    \item Cài đặt thuật toán Forward Chaining
+    \item Cài đặt truy vấn Backward Chaining
+    \item Rà soát, chỉnh sửa lỗi và hoàn thiện nội dung báo cáo; bổ sung các phần còn thiếu và chuẩn hóa định dạng. 
+    \item Thiết kế, cài đặt GUI và visualize quá trình chạy các thuật toán
+\end{itemize}
+& 100\% \\
+\hline
+
+\raggedright \textbf{Trần Quang Minh Huy} &
+\begin{itemize}[leftmargin=*, noitemsep]
+    \item Cài đặt thuật toán Brute-force + Backtracking
+    \item Edit video demo
+    \item Hỗ trợ các công việc chung của nhóm như chuẩn bị dữ liệu, kiểm tra kết quả và viết file README hướng dẫn chạy chương trình.
+\end{itemize}
+& 100\% \\
+\hline
+
+\raggedright \textbf{Trịnh Khánh Linh} &
+\begin{itemize}[leftmargin=*, noitemsep]
+    \item Biểu diễn FOL + Skolem + CNF
+    \item Viết báo cáo Forward Chaining, Backward Chaining, kết quả thực nghiệm
+    \item Quay video demo
+\end{itemize}
+& 100\% \\
+\hline
+
+\raggedright \textbf{Nguyễn Minh Khôi} &
+\begin{itemize}[leftmargin=*, noitemsep]
+    \item Cài đặt thuật toán A* + heuristic
+    \item Viết báo cáo heuristic của A*
+    \item Viết báo cáo benchmark 
+\end{itemize}
+& 100\% \\
+\hline
+
+\end{tabular}
+\end{table}
+
+
+\section{Yêu cầu đồ án}
+\begin{table}[H]
+\centering
+\caption{Bảng tự đánh giá yêu cầu bắt buộc}
+
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|p{5cm}|c|p{6cm}|}
+\hline
+\textbf{STT} & \textbf{Yêu cầu} & \textbf{Trạng thái} & \textbf{Ghi chú} \\
+\hline
+
+1 & Hình thức hóa FOL đầy đủ & Hoàn thành & Dạng Skolem \& CNF cho $\geq 3$ tiên đề \\
+\hline
+
+2 & Sinh ground KB tự động theo N & Hoàn thành & Theo dạng chuẩn CNF \\
+\hline
+
+3 & Implement Forward Chaining & Hoàn thành & Viết từ đầu, đúng trên mọi test case \\
+\hline
+
+4 & Implement Backward Chaining & Hoàn thành & Kiểu Prolog, truy vấn Val(i,j,?) \\
+\hline
+
+5 & Implement A* Search & Hoàn thành & Heuristic chấp nhận được, có phân tích \& so sánh \\
+\hline
+
+6 & Implement Brute-force \& Backtracking & Hoàn thành & Dùng để so sánh hiệu năng \\
+\hline
+
+7 & Thiết kế $\geq 10$ file input & Hoàn thành & Đa dạng kích thước: 4×4, 5×5, 6×6, 7×7, 9×9 \\
+\hline
+
+8 & Báo cáo đầy đủ & Hoàn thành & FOL, pseudocode, thực nghiệm (bảng + biểu đồ), so sánh thuật toán \\
+\hline
+
+9 & Video demo & Hoàn thành & $\geq 3$ test case, upload YouTube/Drive \\
+\hline
+
+10 & Nộp đúng cấu trúc .zip & Hoàn thành & Docs/, Source/, README.txt, requirements.txt \\
+\hline
+
+\end{tabular}
+\end{table}
