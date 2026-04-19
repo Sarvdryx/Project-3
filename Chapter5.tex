@@ -3,3 +3,174 @@
 \titleformat{\chapter}[display]
   {\bfseries\LARGE}  
   {Phần~\thechapter}{0pt}{\raggedright}
+
+\chapter{Các yếu tố ảnh hưởng đến mức độ Overfitting}
+\section{Nhóm các yếu tố về dữ liệu (data-driven factors)}
+\subsection{Số lượng dữ liệu huấn luyện}
+\subsubsection{Ảnh hưởng của kích thước mẫu nhỏ}
+
+\paragraph{Sự ghi nhớ thay vì học quy luật}
+Đối với tập huấn luyện nhỏ, mô hình có xu hướng cho ra kết quả hoàn hảo trên tập huấn luyện nhưng lại hoạt động rất tệ trên tập thử nghiệm. Nguyên nhân là do các mô hình overfitting gặp khó khăn khi xử lý những mẫu dữ liệu trong tập kiểm tra, vốn có thể rất khác biệt so với tập dữ liệu huấn luyện. Đồng thời, các mô hình có xu hướng ghi nhớ toàn bộ dữ liệu huấn luyện, bao gồm cả nhiễu không mong muốn thay vì tìm ra các quy luật tổng quát sâu bên trong dữ liệu \cite{Ying2019}.
+
+\paragraph{Hệ quả}
+Như trong \cite{Vabalas2019} đã đề cập, các lĩnh vực đặc thù như neuroimaging, genomics hay phân tích chuyển động, các nghiên cứu thường phải đối mặt với bài toán dữ liệu có số lượng đặc trưng rất lớn nhưng số lượng mẫu lại hạn chế do chi phí thu thập cao. Điều này dẫn đến một hiện tượng đáng chú ý: các nghiên cứu sử dụng tập dữ liệu nhỏ thường báo cáo độ chính xác của mô hình cao một cách bất thường.
+
+Cụ thể, nhiều khảo sát thực nghiệm trong các bài toán phân loại liên quan đến các rối loạn thần kinh như tâm thần phân liệt, Alzheimer và tự kỷ cho thấy tồn tại một xu hướng rõ rệt: khi kích thước mẫu giảm, độ chính xác báo cáo lại có xu hướng tăng lên. Một nghiên cứu tổng hợp trên 55 công trình về chẩn đoán tự kỷ bằng học máy đã chỉ ra mối tương quan nghịch mạnh giữa kích thước mẫu và độ chính xác (hệ số tương quan $r = -0.70$), trong đó khoảng 49\% biến thiên của độ chính xác có thể được giải thích chỉ bởi quy mô dữ liệu.
+
+Hiện tượng này cho thấy các kết quả có độ chính xác cao trong các nghiên cứu với dữ liệu nhỏ thường phản ánh sai số lạc quan (optimistic bias) do overfitting gây ra, thay vì năng lực học thực sự của mô hình. Nguyên nhân chính là do với dữ liệu hạn chế, các mô hình có độ phức tạp cao dễ khớp với các biến động ngẫu nhiên thay vì nắm bắt cấu trúc tổng quát.
+
+\subsubsection{Mối liên hệ giữa $N$ và độ phức tạp}
+
+Trong cuốn sách \textit{Pattern Recognition and Machine Learning}, \cite[pp.~4--9]{Bishop2006} đã sử dụng ví dụ về khớp đường cong đa thức (Polynomial Curve Fitting) để minh họa mối liên hệ giữa số lượng dữ liệu $N$ và độ phức tạp của mô hình $M$.
+
+\paragraph{Thiết lập bài toán}
+Xét một tập dữ liệu gồm $N$ quan sát $(x, t)$, trong đó $t$ được sinh từ hàm $ \sin(2\pi x)$ kết hợp với nhiễu Gaussian. Mô hình sử dụng là đa thức bậc $M$:
+\[
+y(x, \mathbf{w}) = w_0 + w_1x + w_2x^2 + ... + w_Mx^M = \sum_{j=0}^{M} w_j x^j
+\]
+Các tham số $\mathbf{w}$ được ước lượng bằng cách tối thiểu hóa sai số bình phương.
+\[
+E(w) = \frac{1}{2} \sum_{n=1}^{N}\{ y(x_n, w)-t_n\}^2
+\]
+
+\paragraph{Ảnh hưởng của $N$ đến overfitting}
+Như thể hiện trong Hình~\ref{fig:small_data}, khi số lượng dữ liệu nhỏ (ví dụ $N=10$) và sử dụng đa thức bậc cao ($M=9$), mô hình có thể khớp hoàn toàn dữ liệu huấn luyện nhưng dao động mạnh giữa các điểm, dẫn đến khả năng tổng quát hóa kém. Ngược lại, trong Hình~\ref{fig:large_data}, khi tăng số lượng dữ liệu (ví dụ $N=100$), với cùng một giá trị $M$, hiện tượng overfitting giảm đáng kể do các ràng buộc từ dữ liệu trở nên mạnh hơn, hạn chế khả năng mô hình khớp với nhiễu.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{data_size_1.png}
+    \caption{Mô hình so với đường dữ liệu thật ở kích thước dữ liệu nhỏ}
+    \label{fig:small_data}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{data_size_2.png}
+    \caption{Mô hình so với đường dữ liệu thật ở kích thước dữ liệu lớn}
+    \label{fig:large_data}
+\end{figure}
+
+\paragraph{Kết luận}
+Tập dữ liệu càng lớn thì mô hình càng có khả năng sử dụng các cấu trúc phức tạp mà vẫn duy trì khả năng tổng quát hóa. Một quy tắc kinh nghiệm là số lượng dữ liệu nên lớn hơn nhiều lần số tham số của mô hình. Tuy nhiên, trong cách tiếp cận Bayesian, điều này có thể được nới lỏng nhờ cơ chế điều chuẩn tự động.
+
+\subsection{Hiện tượng học nhiễu và sự nhạy cảm của thuật toán}
+
+Trong môi trường lý tưởng, các mô hình học máy được kỳ vọng sẽ tìm ra các quy luật tổng quát (disciplines) ẩn sau dữ liệu huấn luyện. Tuy nhiên, trên thực tế, dữ liệu luôn bị bao phủ bởi một lớp ``nhiễu'' phát sinh từ các quá trình ngẫu nhiên hoặc các nguồn biến thiên không thể quan sát được.
+
+\subsubsection{Bản chất của hiện tượng học nhiễu (Noise Learning)}
+
+Học nhiễu xảy ra khi mô hình học cả những biến động ngẫu nhiên trong dữ liệu thay vì chỉ nắm bắt cấu trúc tổng quát\cite{Ying2019}.
+
+\begin{itemize}
+    \item \textbf{Nhầm lẫn giữa tín hiệu và nhiễu.} Mô hình không phân biệt được đâu là quy luật thực và đâu là sai số ngẫu nhiên, đặc biệt khi dữ liệu chứa nhiều biến động nhỏ.
+    
+    \item \textbf{Hệ quả lên khả năng tổng quát hóa.} Việc khớp với nhiễu làm mô hình trở nên thiếu ổn định, dẫn đến sai số kiểm tra cao dù sai số huấn luyện thấp. \cite[p.~221]{Hastie2009}
+\end{itemize}
+
+\subsubsection{Sự nhạy cảm với sai lệch và độ phức tạp mô hình}
+
+Mức độ overfitting phụ thuộc chặt chẽ vào khả năng của mô hình trong việc phân biệt giữa dữ liệu đại diện và nhiễu.
+
+\begin{itemize}
+    \item \textbf{Tác động của độ linh hoạt.} Các mô hình có độ phức tạp cao (ví dụ: đa thức bậc cao hoặc mạng thần kinh lớn) có nhiều bậc tự do, khiến chúng trở nên cực kỳ nhạy với các dao động nhỏ trong dữ liệu. Thay vì học một hàm trơn biểu diễn quy luật thực, mô hình có thể dao động mạnh để khớp chính xác các điểm nhiễu\cite[pp.~4--12]{Bishop2006}.
+    
+    \item \textbf{Sự đánh đổi Bias--Variance.} Dưới góc nhìn thống kê, sự nhạy cảm này làm tăng thành phần phương sai (variance) của mô hình. Một mô hình có phương sai cao sẽ thay đổi đáng kể dự đoán khi dữ liệu huấn luyện thay đổi nhẹ, phản ánh sự thiếu ổn định trước nhiễu.\cite{Dar2021}
+\end{itemize}
+
+\subsubsection{Các yếu tố thực nghiệm làm trầm trọng hiện tượng học nhiễu}
+
+\begin{itemize}
+    \item \textbf{Sai lầm trong quy trình kiểm chứng.} Việc chọn đặc trưng hoặc tối ưu tham số trên toàn bộ dữ liệu trước khi chia tập kiểm tra gây rò rỉ thông tin và làm sai lệch đánh giá\cite[p.~245]{Hastie2009}.
+    
+    \item \textbf{Quá trình tối ưu quá mức.} Huấn luyện quá lâu hoặc không có điều chuẩn (regularization) khiến mô hình dần khớp với nhiễu trong dữ liệu.
+\end{itemize}
+
+% Gợi ý Citation LaTeX:
+% Về việc ghi nhớ nhiễu thay vì quy luật: \cite{Ying2019}
+% Về sự dao động của đa thức và tính không trơn tru: \cite{Bishop2006}, Chapter 1
+% Về sự nhạy cảm và thành phần Variance: \cite{Belkin2019}
+% Về việc nội suy nhiễu trong mô hình cực lớn: \cite{Dar2021}
+% Về rò rỉ nhiễu qua pooled data: \cite{Vabalas2019}
+
+\subsection{Tỷ lệ đặc trưng trên mẫu (Feature-to-Sample Ratio -- $p/n$)}
+
+Tỷ lệ $p/n$ phản ánh mối quan hệ giữa độ phức tạp biểu diễn và lượng thông tin quan sát, và có thể được xem là hệ quả trực tiếp của lời nguyền chiều dữ liệu.
+\paragraph{Lời nguyền chiều dữ liệu (Curse of Dimensionality)}
+
+Khi số lượng đặc trưng tăng lên, không gian đầu vào mở rộng theo hàm mũ, dẫn đến hiện tượng dữ liệu trở nên thưa thớt.
+
+\begin{itemize}
+    \item \textbf{Sự bùng nổ của không gian.} Nếu mỗi chiều được chia thành $M$ phần, thì trong không gian $D$ chiều sẽ có $M^D$ vùng. Do đó, số lượng dữ liệu cần thiết để bao phủ không gian này tăng theo hàm mũ, gây khó khăn cho việc ước lượng đáng tin cậy.
+    
+    \item \textbf{Mật độ lấy mẫu giảm mạnh.} Mật độ lấy mẫu hiệu quả giảm nhanh khi số chiều tăng, khiến khoảng cách trung bình giữa các điểm dữ liệu tăng lên đáng kể. Để đạt mật độ tương đương với 100 điểm trong không gian một chiều, không gian 10 chiều sẽ cần tới $100^{10}$ điểm, vượt xa khả năng thu thập dữ liệu thực tế.
+\end{itemize}
+
+\paragraph{Sự thưa thớt và vấn đề ở biên không gian}
+
+Trong không gian nhiều chiều, phần lớn các điểm dữ liệu có xu hướng nằm gần biên của không gian mẫu.
+
+\begin{itemize}
+    \item \textbf{Lân cận mất tính cục bộ.} Để thu thập một tỷ lệ nhỏ dữ liệu (ví dụ 10\%) trong không gian 10 chiều, cần bao phủ tới khoảng 80\% phạm vi của mỗi biến. Khi đó, khái niệm ``lân cận'' không còn mang tính cục bộ, làm giảm hiệu quả của các phương pháp dựa trên khoảng cách.
+    
+    \item \textbf{Ngoại suy thay vì nội suy.} Do dữ liệu tập trung ở biên, việc dự đoán cho điểm mới thường yêu cầu mô hình thực hiện ngoại suy (extrapolation), vốn tiềm ẩn rủi ro cao và dễ dẫn đến sai số lớn, đặc biệt khi mô hình đã khớp với nhiễu.
+\end{itemize}
+
+\paragraph{Nguy cơ xuất hiện các ``quy luật giả''}
+
+Tỷ lệ $p/n$ cao cung cấp cho mô hình nhiều bậc tự do, làm tăng khả năng xuất hiện các tương quan ngẫu nhiên.
+
+\begin{itemize}
+    \item \textbf{Khớp với tổ hợp nhiễu.} Khi số lượng đặc trưng vượt xa số lượng mẫu, mô hình dễ tìm ra các tổ hợp đặc trưng có vẻ giải thích tốt dữ liệu, nhưng thực chất chỉ là khớp với nhiễu.
+    
+    \item \textbf{Sai lệch từ quy trình chọn lọc.} Nếu việc lựa chọn đặc trưng được thực hiện trên toàn bộ dữ liệu trước khi tách tập kiểm chứng, mô hình có thể tận dụng các tương quan ngẫu nhiên để đạt độ chính xác cao giả tạo, nhưng sẽ thất bại trên dữ liệu thực tế.
+    
+    \item \textbf{Ảnh hưởng của quy mô mẫu.} Trong các tập dữ liệu nhỏ với số đặc trưng lớn, một phần đáng kể biến thiên của độ chính xác có thể bị chi phối bởi chính kích thước mẫu thay vì chất lượng mô hình.
+\end{itemize}
+
+\paragraph{Ngưỡng nội suy và góc nhìn hiện đại (Double Descent)}
+
+Theo quan điểm cổ điển, overfitting tăng dần khi tỷ lệ $p/n$ tăng. Tuy nhiên, các nghiên cứu gần đây đã phát hiện hiện tượng \textit{double descent}.
+
+\begin{itemize}
+    \item \textbf{Đỉnh overfitting tại ngưỡng nội suy.} Hiện tượng quá khớp đạt mức nghiêm trọng nhất tại ngưỡng nội suy, khi số lượng tham số xấp xỉ số lượng mẫu ($p \approx n$).
+    
+    \item \textbf{Cải thiện trong chế độ overparameterized.} Khi số lượng tham số vượt xa số lượng mẫu ($p \gg n$), sai số kiểm tra có thể giảm trở lại. Điều này được giải thích bởi việc các thuật toán tối ưu (như SGD) có xu hướng tìm được nghiệm có chuẩn nhỏ và trơn hơn, giúp cải thiện khả năng khái quát hóa.
+\end{itemize}
+
+% Về lời nguyền chiều dữ liệu: \cite{Bishop2006}, Section 1.4 hoặc \cite{Hastie2009}, Section 2.5.
+% Về mật độ mẫu N 
+% 1/p
+%  : \cite{Hastie2009}, trang 23-24.
+% Về việc khớp nhiễu và p/n: \cite{Vabalas2019}.
+% Về hiện tượng Double Descent: \cite{Belkin2019} hoặc \cite{Dar2021}.
+
+\subsection{Sự hiện diện của các điểm dị biệt (Outliers)}
+
+Các điểm dị biệt là những quan sát không tuân theo phân phối chung của dữ liệu hoặc nằm xa ranh giới quyết định lý tưởng. Sự hiện diện của chúng trong tập huấn luyện là một trong những tác nhân quan trọng dẫn đến overfitting, đặc biệt đối với các mô hình dựa trên các giả định thống kê cứng nhắc.
+
+\paragraph{Cơ chế kéo lệch mô hình (Model Pulling)}
+
+Hiện tượng mô hình bị ``kéo lệch'' xuất phát từ bản chất của các hàm mất mát phổ biến:
+
+\begin{itemize}
+    \item \textbf{Sự nhạy cảm của bình phương tối thiểu (Least Squares).} Phương pháp bình phương tối thiểu thiếu tính bền vững (robustness) trước các điểm dị biệt. Do hàm mất mát sử dụng bình phương sai số, các quan sát có sai số lớn sẽ có ảnh hưởng rất mạnh đến quá trình tối ưu.
+    
+    \item \textbf{Mối liên hệ với phân phối Gaussian.} Việc sử dụng bình phương tối thiểu tương đương với ước lượng hợp lý cực đại (Maximum Likelihood) dưới giả định nhiễu tuân theo phân phối Gaussian. Do phân phối này có ``đuôi nhẹ'', nó không mô hình hóa tốt các điểm nằm xa trung tâm, khiến tham số ước lượng bị lệch đáng kể khi xuất hiện outliers.
+\end{itemize}
+
+\paragraph{Tác động đến ranh giới quyết định}
+
+Để giảm sai số huấn luyện, mô hình sẽ cố gắng điều chỉnh tham số nhằm khớp với cả các điểm dị biệt:
+
+\begin{itemize}
+    \item \textbf{Điều chỉnh cực đoan.} Ranh giới quyết định có thể bị dịch chuyển hoặc biến dạng mạnh để bao phủ các điểm nằm xa, ngay cả khi chúng chỉ là nhiễu. Ví dụ, trong bài toán phân loại tuyến tính, một vài điểm dị biệt có thể làm thay đổi đáng kể hướng của siêu phẳng quyết định.
+    
+    \item \textbf{Mất khả năng khái quát hóa.} Khi ranh giới bị kéo lệch theo các điểm dị biệt, mô hình không còn phản ánh đúng quy luật của phần lớn dữ liệu. Điều này dẫn đến sai số huấn luyện thấp nhưng sai số kiểm tra cao.
+\end{itemize}
+Điểm khác biệt quan trọng của outliers so với nhiễu thông thường là ảnh hưởng không cân xứng của chúng lên hàm mất mát, đặc biệt trong các phương pháp sử dụng bình phương sai số. Điều này khiến chỉ một số ít quan sát cũng có thể làm thay đổi đáng kể tham số mô hình.
+
+% Gợi ý Citation cho LaTeX:
+% Định nghĩa và độ nhạy của Least Squares: \cite{Bishop2006}, trang 185-186
+% Hình ảnh minh họa ranh giới bị lệch: \cite{Bishop2006}, Figure 4.4
+% Tính bền vững của t-distribution so với Gaussian: \cite{Bishop2006}, trang 103-104
+% Hàm mất mát Huber và tính bền vững: \cite{Hastie2009}, trang 348-350
