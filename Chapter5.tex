@@ -20,16 +20,6 @@ Trong các lĩnh vực như neuroimaging hay genomics, nơi số đặc trưng l
 
 Trong cuốn sách \textit{Pattern Recognition and Machine Learning}, \cite[pp.~4--9]{Bishop2006} đã sử dụng ví dụ về khớp đường cong đa thức (Polynomial Curve Fitting) để minh họa mối liên hệ giữa số lượng dữ liệu $N$ và độ phức tạp của mô hình $M$.
 
-\paragraph{Thiết lập bài toán}
-Xét một tập dữ liệu gồm $N$ quan sát $(x, t)$, trong đó $t$ được sinh từ hàm $ \sin(2\pi x)$ kết hợp với nhiễu Gaussian. Mô hình sử dụng là đa thức bậc $M$:
-\[
-y(x, \mathbf{w}) = w_0 + w_1x + w_2x^2 + ... + w_Mx^M = \sum_{j=0}^{M} w_j x^j
-\]
-Các tham số $\mathbf{w}$ được ước lượng bằng cách tối thiểu hóa sai số bình phương.
-\[
-E(w) = \frac{1}{2} \sum_{n=1}^{N}\{ y(x_n, w)-t_n\}^2
-\]
-
 \paragraph{Ảnh hưởng của $N$ đến overfitting}
 Như thể hiện trong Hình~\ref{fig:small_data}, khi số lượng dữ liệu nhỏ (ví dụ $N=10$) và sử dụng đa thức bậc cao ($M=9$), mô hình có thể khớp hoàn toàn dữ liệu huấn luyện nhưng dao động mạnh giữa các điểm, dẫn đến khả năng tổng quát hóa kém. Ngược lại, trong Hình~\ref{fig:large_data}, khi tăng số lượng dữ liệu (ví dụ $N=100$), với cùng một giá trị $M$, hiện tượng overfitting giảm đáng kể do các ràng buộc từ dữ liệu trở nên mạnh hơn, hạn chế khả năng mô hình khớp với nhiễu.
 
@@ -47,10 +37,7 @@ Như thể hiện trong Hình~\ref{fig:small_data}, khi số lượng dữ liệ
     \label{fig:large_data}
 \end{figure}
 
-\paragraph{Kết luận}
-Tập dữ liệu càng lớn thì mô hình càng có khả năng sử dụng các cấu trúc phức tạp mà vẫn duy trì khả năng tổng quát hóa. Một quy tắc kinh nghiệm là số lượng dữ liệu nên lớn hơn nhiều lần số tham số của mô hình. Tuy nhiên, trong cách tiếp cận Bayesian, điều này có thể được nới lỏng nhờ cơ chế điều chuẩn tự động.
-
-\subsection{Hiện tượng học nhiễu và sự nhạy cảm của thuật toán}
+\subsection{Hiện tượng học nhiễu}
 
 Trong môi trường lý tưởng, các mô hình học máy được kỳ vọng sẽ tìm ra các quy luật tổng quát (disciplines) ẩn sau dữ liệu huấn luyện. Tuy nhiên, trên thực tế, dữ liệu luôn bị bao phủ bởi một lớp ``nhiễu'' phát sinh từ các quá trình ngẫu nhiên hoặc các nguồn biến thiên không thể quan sát được.
 
@@ -149,31 +136,29 @@ Theo quan điểm cổ điển, mức độ overfitting tăng dần khi tỷ l�
     \item \textbf{Cải thiện trong chế độ overparameterized.} Khi số lượng tham số vượt xa số lượng mẫu ($p \gg n$), sai số kiểm tra có thể giảm trở lại. Điều này được giải thích bởi việc các thuật toán tối ưu (như SGD) có xu hướng tìm được nghiệm có chuẩn nhỏ và trơn hơn, từ đó cải thiện khả năng khái quát hóa \cite{belkin2019reconciling}.
 \end{itemize}
 
-\subsection{Bản chất của Maximum Likelihood (MLE) và cách tiếp cận Bayesian}
-
-\textbf{1. Bản chất của Maximum Likelihood (MLE) và nguy cơ Overfitting}
+\subsection{Phương pháp ước lượng tham số (Estimation Method)}
 
 Phương pháp Maximum Likelihood Estimation (MLE) tìm kiếm một ước lượng điểm (point estimate) cho các tham số sao cho xác suất thu được tập dữ liệu quan sát là lớn nhất. Tuy nhiên, cách tiếp cận này đối mặt với các vấn đề sau:
 
 \begin{itemize}
-    \item \textbf{Tối ưu hóa cục bộ trên dữ liệu huấn luyện:} MLE giả định rằng các giá trị tham số làm cho dữ liệu huấn luyện có xác suất cao nhất chính là các giá trị thực tế. Điều này khiến mô hình cực kỳ nhạy cảm với nhiễu ngẫu nhiên trong tập dữ liệu nhỏ. Ví dụ, trong bài toán khớp đường cong bằng đa thức, MLE có thể chọn các trọng số cực lớn để đi qua chính xác mọi điểm dữ liệu, dẫn đến những dao động dữ dội (wild oscillations) và khả năng khái quát hóa kém.
+    \item \textbf{Tối ưu hóa cục bộ trên dữ liệu huấn luyện:} MLE giả định rằng các giá trị tham số làm cho dữ liệu huấn luyện có xác suất cao nhất chính là các giá trị thực tế. Điều này khiến mô hình cực kỳ nhạy cảm với nhiễu ngẫu nhiên trong tập dữ liệu nhỏ.
     
-    \item \textbf{Sai lệch hệ thống (Bias) trong ước lượng:} Một ví dụ điển hình là việc ước lượng phương sai của phân phối Gaussian. MLE có xu hướng đánh giá thấp (underestimate) phương sai thực tế vì nó đo lường sự biến thiên dựa trên trung bình mẫu (vốn đã được điều chỉnh theo nhiễu của dữ liệu huấn luyện) thay vì trung bình thực của quần thể.
+    \item \textbf{Sai lệch hệ thống (Bias) trong ước lượng:} Một ví dụ điển hình là việc ước lượng phương sai của phân phối Gaussian. MLE có xu hướng đánh giá thấp (underestimate) phương sai thực tế vì nó đo lường sự biến thiên dựa trên trung bình mẫu (vốn đã được điều chỉnh theo nhiễu của dữ liệu huấn luyện) thay vì trung bình thực của quần thể \cite[pp.~26-28]{Bishop2006}.
     
-    \item \textbf{Vấn đề với dữ liệu phân tách hoàn hảo:} Trong các mô hình phân loại như Logistic Regression, nếu dữ liệu có thể phân tách tuyến tính một cách hoàn hảo, MLE sẽ đẩy các tham số tiến tới vô cùng để ép xác suất dự báo về 1 hoặc 0, dẫn đến mô hình bị quá khớp nghiêm trọng.
+    \item \textbf{Vấn đề với dữ liệu phân tách hoàn hảo:} Trong các mô hình phân loại như Logistic Regression, nếu dữ liệu có thể phân tách tuyến tính một cách hoàn hảo, MLE sẽ đẩy các tham số tiến tới vô cùng để ép xác suất dự báo về 1 hoặc 0, dẫn đến mô hình bị quá khớp nghiêm trọng \cite[pp.~206-207]{Bishop2006}.
 \end{itemize}
 
-\textbf{2. Cách tiếp cận Bayesian và sức mạnh của sự tích phân (Marginalization)}
+% \textbf{2. Cách tiếp cận Bayesian và sức mạnh của sự tích phân (Marginalization)}
 
-Ngược lại với ước lượng điểm, phương pháp Bayesian không tìm một giá trị tham số duy nhất mà duy trì một phân phối xác suất (posterior distribution) trên toàn bộ không gian tham số.
+% Ngược lại với ước lượng điểm, phương pháp Bayesian không tìm một giá trị tham số duy nhất mà duy trì một phân phối xác suất (posterior distribution) trên toàn bộ không gian tham số.
 
-\begin{itemize}
-    \item \textbf{Nguyên lý tích phân (Marginalization):} Thay vì đưa ra dự báo dựa trên một bộ tham số tốt nhất, phương pháp Bayesian sử dụng phân phối dự báo (predictive distribution) bằng cách lấy trung bình có trọng số của tất cả các cấu hình tham số khả thi thông qua phép tích phân. Điều này giúp tính toán đến sự không chắc chắn của tham số (parameter uncertainty).
+% \begin{itemize}
+%     \item \textbf{Nguyên lý tích phân (Marginalization):} Thay vì đưa ra dự báo dựa trên một bộ tham số tốt nhất, phương pháp Bayesian sử dụng phân phối dự báo (predictive distribution) bằng cách lấy trung bình có trọng số của tất cả các cấu hình tham số khả thi thông qua phép tích phân. Điều này giúp tính toán đến sự không chắc chắn của tham số (parameter uncertainty).
     
-    \item \textbf{Tự động điều chỉnh độ phức tạp (Occam's Razor):} Trong khung tham chiếu Bayesian (đặc biệt là thông qua Model Evidence hoặc Marginal Likelihood), các mô hình quá phức tạp sẽ bị phạt một cách tự nhiên. Một mô hình quá linh hoạt (quá nhiều tham số) sẽ phân tán xác suất của nó trên quá nhiều tập dữ liệu có thể, dẫn đến việc xác suất cho tập dữ liệu thực tế bị giảm xuống. Do đó, phương pháp Bayesian thường ưu tiên các mô hình có độ phức tạp trung bình — đủ tốt để giải thích dữ liệu nhưng đủ đơn giản để không khớp với nhiễu.
+%     \item \textbf{Tự động điều chỉnh độ phức tạp (Occam's Razor):} Trong khung tham chiếu Bayesian (đặc biệt là thông qua Model Evidence hoặc Marginal Likelihood), các mô hình quá phức tạp sẽ bị phạt một cách tự nhiên. Một mô hình quá linh hoạt (quá nhiều tham số) sẽ phân tán xác suất của nó trên quá nhiều tập dữ liệu có thể, dẫn đến việc xác suất cho tập dữ liệu thực tế bị giảm xuống. Do đó, phương pháp Bayesian thường ưu tiên các mô hình có độ phức tạp trung bình — đủ tốt để giải thích dữ liệu nhưng đủ đơn giản để không khớp với nhiễu.
     
-    \item \textbf{Số lượng tham số hiệu dụng:} Trong mô hình Bayesian, số lượng tham số tham gia thực sự vào việc khớp dữ liệu (effective number of parameters) sẽ tự động điều chỉnh dựa trên kích thước của tập dữ liệu, giúp tránh việc mô hình quá phức tạp so với lượng thông tin hiện có.
-\end{itemize}
+%     \item \textbf{Số lượng tham số hiệu dụng:} Trong mô hình Bayesian, số lượng tham số tham gia thực sự vào việc khớp dữ liệu (effective number of parameters) sẽ tự động điều chỉnh dựa trên kích thước của tập dữ liệu, giúp tránh việc mô hình quá phức tạp so với lượng thông tin hiện có.
+% \end{itemize}
 \section{Nhóm yếu tố về quy trình và thuật toán}
 \subsection{Sự hiện diện của các điểm dị biệt (Outliers)}
 
@@ -199,3 +184,27 @@ Hiện tượng mô hình bị ``kéo lệch'' xuất phát từ bản chất c�
     \item \textbf{Mất khả năng khái quát hóa.} Khi ranh giới bị kéo lệch theo các điểm dị biệt, mô hình không còn phản ánh đúng quy luật của phần lớn dữ liệu. Điều này dẫn đến sai số huấn luyện thấp nhưng sai số kiểm tra cao\cite[p.~112]{Hastie2009}.
 \end{itemize}
 Điểm khác biệt quan trọng của outliers so với nhiễu thông thường là ảnh hưởng không cân xứng của chúng lên hàm mất mát, đặc biệt trong các phương pháp sử dụng bình phương sai số. Điều này khiến chỉ một số ít quan sát cũng có thể làm thay đổi đáng kể tham số mô hình.
+
+\subsection{Sai lầm trong quy trình kiểm chứng}
+
+Overfitting không chỉ xuất phát từ độ phức tạp của mô hình mà còn thường xuyên bị ``che giấu'' hoặc trở nên trầm trọng hơn do các sai sót trong quy trình thực nghiệm, đặc biệt là hiện tượng \textit{rò rỉ dữ liệu} (data leakage), khi thông tin từ tập kiểm tra vô tình được sử dụng trong quá trình xây dựng mô hình.
+
+\paragraph{Rò rỉ dữ liệu do gộp dữ liệu (Data Leakage from Data Pooling)}
+
+Việc không phân tách nghiêm ngặt giữa dữ liệu huấn luyện và dữ liệu kiểm tra trong các bước tiền xử lý là nguyên nhân phổ biến dẫn đến đánh giá sai lệch hiệu suất:
+
+\begin{itemize}
+    \item \textbf{Chọn đặc trưng (Feature Selection):} Nếu việc chọn đặc trưng được thực hiện trên toàn bộ dữ liệu trước khi chia tập, mô hình sẽ ``nhìn thấy trước'' các mẫu kiểm tra. Thực nghiệm cho thấy sai lầm này có thể gây sai lệch kết quả lớn hơn so với tính toán\cite[pp.~245--247]{Hastie2009}.
+\end{itemize}
+
+\paragraph{Tinh chỉnh tham số không hợp lệ (Improper Parameter Tuning)}
+
+Một dạng rò rỉ dữ liệu khác xảy ra khi tập kiểm tra được sử dụng để lựa chọn hoặc tối ưu các siêu tham số của mô hình. Trong trường hợp này, tập kiểm tra không còn đóng vai trò đánh giá khách quan, dẫn đến kết quả báo cáo bị lạc quan quá mức và không phản ánh đúng khả năng tổng quát hóa \cite[p.~32]{Bishop2006}.
+
+\subsection{Thủ tục so sánh đa phương (Multiple Comparisons Procedures - MCP)}
+
+Trong các thuật toán cảm sinh (induction) và trí tuệ nhân tạo, thủ tục so sánh đa phương được xác định là một trong những nguyên nhân chính dẫn đến hiện tượng overfitting.
+
+\paragraph{Cơ chế gây lỗi}
+
+Quy trình này thường liên quan đến việc đánh giá đồng thời một số lượng lớn các cấu hình, giả thuyết hoặc tổ hợp thuộc tính dựa trên điểm số từ một hàm mục tiêu và chỉ chọn ra mục có điểm số cao nhất. Khi không gian tìm kiếm quá rộng (tồn tại nhiều giả thuyết), xác suất để một thuộc tính ngẫu nhiên đạt được điểm số cao thuần túy do may mắn sẽ tăng lên đáng kể \cite{Ying2019}.
