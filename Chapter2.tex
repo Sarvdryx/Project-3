@@ -4,3 +4,12 @@
   {\bfseries\LARGE}  
   {Phần~\thechapter}{0pt}{\raggedright}
 
+\chapter{Mở đầu}
+
+Trong lĩnh vực Machine Learning, đặc biệt là học có giám sát (supervised learning), một trong những vấn đề quan trọng ảnh hưởng trực tiếp đến hiệu quả của mô hình là hiện tượng \textit{overfitting}. Overfitting xảy ra khi mô hình học quá chi tiết từ dữ liệu huấn luyện, bao gồm cả các nhiễu (noise), dẫn đến khả năng tổng quát hóa kém trên dữ liệu chưa từng thấy. Nói cách khác, mô hình có thể đạt độ chính xác rất cao trên tập huấn luyện nhưng lại hoạt động kém trên tập kiểm tra \cite{Ying2019}.
+
+Về bản chất, mục tiêu của Machine Learning không phải là tối ưu hóa tuyệt đối trên dữ liệu huấn luyện, mà là tối đa hóa khả năng dự đoán trên dữ liệu mới. Tuy nhiên, nếu mô hình được tối ưu hóa quá mức để giảm sai số trên tập huấn luyện, nó có xu hướng ghi nhớ các đặc điểm riêng lẻ hoặc nhiễu của dữ liệu thay vì học được quy luật tổng quát. Điều này dẫn đến sự sai lệch giữa mục tiêu tối ưu hóa và mục tiêu thực tế của bài toán học máy \cite{Dietterich1995}.
+
+Tầm quan trọng của việc xử lý overfitting nằm ở khả năng quyết định tính ứng dụng thực tế của mô hình. Một mô hình chỉ hoạt động tốt trên dữ liệu huấn luyện nhưng thất bại trên dữ liệu thực tế sẽ không có giá trị sử dụng. Do đó, việc nhận diện và kiểm soát overfitting là một kỹ năng cốt lõi trong quá trình xây dựng mô hình học máy.
+
+Một dấu hiệu phổ biến của overfitting là khi sai số trên tập huấn luyện ($E_{in}$) tiếp tục giảm, trong khi sai số trên tập kiểm tra ($E_{out}$) lại bắt đầu tăng. Hiện tượng này cho thấy mô hình đang dần học cả những yếu tố không mang tính quy luật của dữ liệu.
