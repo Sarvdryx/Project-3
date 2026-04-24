@@ -16,7 +16,7 @@ Cần phân biệt rõ giữa overfitting và khả năng tổng quát hóa kém
 
 \section{Dấu hiệu nhận diện Overfitting}
 
-Một trong những dấu hiệu quan trọng nhất để nhận diện overfitting là mối quan hệ giữa sai số huấn luyện và sai số kiểm tra. Theo bài giảng của Caltech về \textit{Learning From Data}, khi $E_{in}$ giảm nhưng $E_{out}$ lại tăng, điều này cho thấy mô hình đang học cả nhiễu trong dữ liệu. Nói cách khác, mô hình không chỉ học quy luật thực sự mà còn ``fit'' cả những biến động ngẫu nhiên không có ý nghĩa.
+Một trong những dấu hiệu quan trọng nhất để nhận diện overfitting là mối quan hệ giữa sai số huấn luyện và sai số kiểm tra. Theo Abu-Mostafa trong \textit{Learning From Data} (Lecture 11: \textit{Overfitting}), khi sai số trong mẫu \(E_{in}\) tiếp tục giảm nhưng sai số ngoài mẫu \(E_{out}\) lại tăng (\textit{``Ein $\downarrow$ Eout $\uparrow$''}), đó là dấu hiệu mô hình đang rơi vào hiện tượng overfitting, tức học cả nhiễu trong dữ liệu huấn luyện thay vì quy luật tổng quát \cite{caltech_lfd}. Nói cách khác, mô hình không chỉ học quy luật thực sự mà còn ``fit'' cả những biến động ngẫu nhiên không có ý nghĩa.
 
 Hiện tượng này thường xuất hiện rõ ràng trong quá trình huấn luyện các mô hình học sâu. Ban đầu, khi mô hình bắt đầu học, cả $E_{in}$ và $E_{out}$ đều giảm do mô hình dần nắm bắt được các đặc trưng quan trọng của dữ liệu. Tuy nhiên, sau một số epoch nhất định, việc tiếp tục huấn luyện sẽ khiến mô hình bắt đầu ghi nhớ dữ liệu huấn luyện, dẫn đến việc $E_{out}$ tăng lên trong khi $E_{in}$ vẫn tiếp tục giảm. Đây chính là thời điểm mà overfitting bắt đầu xảy ra.
 
