@@ -3,3 +3,299 @@
 \titleformat{\chapter}[display]
   {\bfseries\LARGE}  
   {Phần~\thechapter}{0pt}{\raggedright}
+
+\chapter{Các ``thủ phạm'' chính gây ra Overfitting (Noise)}
+
+\section{Noise như nguyên nhân cốt lõi của overfitting}
+
+\subsection{Bản chất của overfitting dưới góc nhìn học nhiễu}
+
+\subsubsection{Overfitting không chỉ là vấn đề độ phức tạp}
+
+Trong các tài liệu học máy cổ điển, overfitting thường được quy cho việc sử dụng mô hình quá phức tạp so với dữ liệu. Tuy nhiên, cách nhìn này là chưa đầy đủ. Một cách hiểu sâu sắc hơn cho rằng overfitting xảy ra khi mô hình học không chỉ quy luật tổng quát mà còn học cả những biến động ngẫu nhiên trong dữ liệu, tức là \textit{noise}.
+
+Theo bài giảng của Abu-Mostafa, bản chất của overfitting được mô tả như sau:
+
+\begin{quote}
+``Fitting the data more than is warranted – fitting the noise''
+\end{quote}
+
+Như vậy, vấn đề không nằm ở việc mô hình học tốt hay không, mà nằm ở việc mô hình học \textit{cái gì}. Khi mô hình bắt đầu khớp với các dao động không mang ý nghĩa thống kê, khả năng tổng quát hóa sẽ suy giảm nghiêm trọng \cite{abumostafa2012}.
+
+\subsubsection{Biểu hiện thực nghiệm của hiện tượng học nhiễu}
+
+Một dấu hiệu quan trọng của overfitting là sự phân kỳ giữa sai số huấn luyện và sai số kiểm tra:
+
+\begin{itemize}
+    \item Sai số huấn luyện $E_{in}$ giảm đều
+    \item Sai số kiểm tra $E_{out}$ giảm rồi tăng
+\end{itemize}
+
+\paragraph{Diễn giải}
+
+Hiện tượng này phản ánh một quá trình chuyển tiếp:
+\begin{itemize}
+    \item Giai đoạn đầu: mô hình học tín hiệu (signal)
+    \item Giai đoạn sau: mô hình học nhiễu (noise)
+\end{itemize}
+
+Theo \cite[p.~221]{Hastie2009}, đây là hệ quả trực tiếp của việc thành phần variance tăng lên khi mô hình trở nên quá linh hoạt.
+
+---
+
+\section{Phân loại noise trong học máy}
+
+\subsection{Hai loại noise cơ bản}
+
+Trong Lecture 11, noise được phân thành hai loại chính:
+
+\begin{itemize}
+    \item \textbf{Stochastic noise (nhiễu ngẫu nhiên)}
+    \item \textbf{Deterministic noise (nhiễu xác định)}
+\end{itemize}
+
+Sự phân biệt này mang ý nghĩa quan trọng vì:
+\begin{itemize}
+    \item Hai loại noise có nguồn gốc khác nhau
+    \item Ảnh hưởng khác nhau đến bias và variance
+    \item Cách xử lý cũng khác nhau
+\end{itemize}
+
+---
+
+\section{Stochastic noise (nhiễu ngẫu nhiên)}
+
+\subsection{Mô hình hóa và bản chất}
+
+\subsubsection{Biểu diễn toán học}
+
+Trong nhiều bài toán học máy, dữ liệu được mô hình hóa như:
+
+\begin{equation}
+y = f(x) + \epsilon(x)
+\end{equation}
+
+Trong đó:
+\begin{itemize}
+    \item $f(x)$ là hàm mục tiêu thực
+    \item $\epsilon(x)$ là nhiễu ngẫu nhiên với:
+\end{itemize}
+
+\begin{equation}
+E[\epsilon(x)] = 0, \quad Var(\epsilon(x)) = \sigma^2
+\end{equation}
+
+Theo \cite[pp.~46--48]{Bishop2006}, giả định này phản ánh thực tế rằng dữ liệu luôn chứa sai số không thể quan sát trực tiếp.
+
+---
+
+\subsubsection{Bản chất thống kê của stochastic noise}
+
+\begin{itemize}
+    \item Không có cấu trúc xác định
+    \item Không phụ thuộc vào mô hình
+    \item Có thể mô tả bằng phân phối xác suất
+\end{itemize}
+
+\paragraph{Ý nghĩa}
+
+Stochastic noise đại diện cho những yếu tố không thể kiểm soát trong dữ liệu, do đó nó thiết lập giới hạn tối thiểu của sai số dự đoán.
+
+---
+
+\subsection{Nguồn gốc của stochastic noise}
+
+\subsubsection{Các nguồn phổ biến}
+
+\begin{itemize}
+    \item Sai số đo lường (measurement error)
+    \item Nhiễu môi trường (environmental noise)
+    \item Biến ẩn không quan sát được
+    \item Tính ngẫu nhiên nội tại
+\end{itemize}
+
+Theo \cite[pp.~33--35]{Hastie2009}, ngay cả trong các hệ thống xác định, việc thiếu thông tin cũng tạo ra noise hiệu dụng.
+
+---
+
+\subsection{Cơ chế gây overfitting}
+
+\subsubsection{Mô hình học nhiễu như thế nào}
+
+Khi mô hình có độ phức tạp cao, nó có thể:
+\begin{itemize}
+    \item Khớp chính xác các điểm dữ liệu
+    \item Bao gồm cả các dao động ngẫu nhiên
+\end{itemize}
+
+Điều này dẫn đến:
+\begin{itemize}
+    \item Sai số huấn luyện thấp
+    \item Sai số kiểm tra cao
+\end{itemize}
+
+---
+
+\subsubsection{Liên hệ với bias--variance}
+
+Sai số tổng thể:
+
+\begin{equation}
+E[(g(x) - y)^2] = Bias^2 + Variance + Noise
+\end{equation}
+
+\paragraph{Phân tích}
+
+\begin{itemize}
+    \item Noise là irreducible error
+    \item Không thể loại bỏ bằng mô hình
+\end{itemize}
+
+Theo \cite{Domingos2000}, noise thiết lập giới hạn dưới của hiệu suất học máy.
+
+---
+
+\subsection{Hệ quả học thuật}
+
+\begin{itemize}
+    \item Stochastic noise làm tăng variance
+    \item Khi kết hợp với mô hình phức tạp $\rightarrow$ overfitting mạnh
+\end{itemize}
+
+---
+
+\section{Deterministic noise (nhiễu xác định)}
+
+\subsection{Định nghĩa và bản chất}
+
+\subsubsection{Định nghĩa chính thức}
+
+Deterministic noise được định nghĩa là:
+
+\begin{equation}
+\text{Noise} = f(x) - h^*(x)
+\end{equation}
+
+Trong đó $h^*(x)$ là mô hình tốt nhất trong không gian giả thuyết $H$ \cite{abumostafa2012}.
+
+---
+
+\subsubsection{Bản chất của deterministic noise}
+
+\begin{itemize}
+    \item Không ngẫu nhiên
+    \item Phụ thuộc vào mô hình
+    \item Có tính hệ thống
+\end{itemize}
+
+\paragraph{Ý nghĩa}
+
+Deterministic noise phản ánh sự không phù hợp giữa mô hình và dữ liệu.
+
+---
+
+\subsection{Nguồn gốc}
+
+\subsubsection{Giới hạn của không gian giả thuyết}
+
+Deterministic noise xuất hiện khi:
+
+\begin{itemize}
+    \item Mô hình không đủ biểu diễn
+    \item Không gian giả thuyết không chứa hàm thật
+\end{itemize}
+
+\paragraph{Ví dụ}
+
+Đa thức bậc thấp không thể xấp xỉ hàm bậc cao $\rightarrow$ sai lệch có hệ thống.
+
+---
+
+\subsection{Liên hệ với bias}
+
+Theo \cite{Geman1992}:
+
+\begin{itemize}
+    \item Deterministic noise gắn với bias
+    \item Bias cao $\rightarrow$ sai lệch lớn
+\end{itemize}
+
+---
+
+\subsection{Cơ chế gây overfitting}
+
+\subsubsection{Hiệu ứng dữ liệu hữu hạn}
+
+Khi dữ liệu hữu hạn:
+\begin{itemize}
+    \item Mô hình cố gắng fit phần sai lệch
+    \item Dẫn đến overfitting
+\end{itemize}
+
+---
+
+\subsubsection{Phân tích sâu}
+
+Ngay cả khi không có stochastic noise:
+\begin{itemize}
+    \item Overfitting vẫn xảy ra
+\end{itemize}
+
+Điều này chứng minh rằng:
+\begin{quote}
+Overfitting không chỉ do ngẫu nhiên, mà còn do sai mô hình
+\end{quote}
+
+---
+
+\section{So sánh hai loại noise}
+
+\subsection{So sánh bản chất}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+Tiêu chí & Stochastic Noise & Deterministic Noise \\
+\hline
+Bản chất & Ngẫu nhiên & Có cấu trúc \\
+Phụ thuộc mô hình & Không & Có \\
+Liên hệ & Variance & Bias \\
+Loại bỏ được & Không & Có \\
+\hline
+\end{tabular}
+\caption{So sánh hai loại noise}
+\end{table}
+
+---
+
+\section{Tác động tổng hợp của noise}
+
+\subsection{Ảnh hưởng của dữ liệu}
+
+\begin{itemize}
+    \item $N$ tăng $\rightarrow$ overfitting giảm
+    \item Noise tăng $\rightarrow$ overfitting tăng
+\end{itemize}
+
+---
+
+\subsection{Giải thích học thuật}
+
+Theo \cite[pp.~36--38]{Hastie2009}:
+
+\begin{itemize}
+    \item Dữ liệu nhiều giúp giảm variance
+    \item Noise làm tăng độ bất định
+\end{itemize}
+
+---
+
+\section{Kết luận}
+
+\begin{itemize}
+    \item Noise là nguyên nhân cốt lõi của overfitting
+    \item Bao gồm hai loại: stochastic và deterministic
+    \item Overfitting xảy ra khi mô hình học noise thay vì signal
+    \item Việc hiểu noise là nền tảng để thiết kế thuật toán học hiệu quả
+\end{itemize}
