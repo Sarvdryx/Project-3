@@ -6,3 +6,11 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Mô hình so với đường dữ liệu thật ở kích thước dữ liệu nhỏ}}{12}{figure.5.1}%
 \contentsline {figure}{\numberline {5.2}{\ignorespaces Mô hình so với đường dữ liệu thật ở kích thước dữ liệu lớn}}{13}{figure.5.2}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Dữ liệu huấn luyện và hàm sin gốc}}{18}{figure.6.1}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Kết quả khớp đa thức bậc 9 với L2 regularization}}{18}{figure.6.2}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Sai số huấn luyện và kiểm định theo số bước lặp (epoch)}}{19}{figure.6.3}%
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Đường cong học tập trên MNIST: lỗi log-âm khả năng}}{20}{figure.6.4}%
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Minh họa làm cong tổng hợp (synthetic warping) chữ số viết tay}}{21}{figure.6.5}%
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Kỹ thuật kiểm định chéo S-fold (S=4)}}{22}{figure.6.6}%
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Ảnh hưởng của kích thước tập dữ liệu lên overfitting (đa thức bậc 9)}}{23}{figure.6.7}%

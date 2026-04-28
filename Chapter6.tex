@@ -3,3 +3,177 @@
 \titleformat{\chapter}[display]
   {\bfseries\LARGE}  
   {Phần~\thechapter}{0pt}{\raggedright}
+
+\chapter{Các phương pháp khắc phục Overfitting}
+\section{Regularization (Chỉnh hóa/Điều tiết)}
+
+Chúng ta định nghĩa \textbf{regularization (chuẩn hoá)} là ``bất kỳ sự điều chỉnh nào mà ta thực hiện đối với một thuật toán học nhằm giảm lỗi tổng quát hóa (generalization error) nhưng không làm giảm lỗi trên tập huấn luyện (training error) \cite[p.~231]{Goodfellow2016}.'' 
+
+Có rất nhiều chiến lược regularization. Một số phương pháp đặt thêm các ràng buộc lên mô hình học máy, chẳng hạn như áp đặt giới hạn lên giá trị của các tham số. Một số phương pháp khác thêm các hạng tử vào hàm mục tiêu, có thể được xem như những ràng buộc ``mềm'' đối với các tham số. Nếu được lựa chọn cẩn thận, các ràng buộc và hình phạt này có thể giúp cải thiện hiệu năng trên tập kiểm tra (test set).
+
+Đôi khi, các ràng buộc và hình phạt này được thiết kế để đưa vào những dạng tri thức tiên nghiệm (prior knowledge) cụ thể. Trong những trường hợp khác, chúng được dùng để thể hiện một xu hướng chung là ưu tiên các mô hình đơn giản hơn nhằm tăng khả năng tổng quát hóa.
+
+Trong một số tình huống, các hình phạt và ràng buộc là cần thiết để biến một bài toán chưa xác định (underdetermined) thành bài toán xác định. Ngoài ra, một số dạng regularization khác, được gọi là \textbf{phương pháp tổ hợp (ensemble methods)}, kết hợp nhiều giả thuyết khác nhau cùng giải thích dữ liệu huấn luyện \cite[p.~30]{Bishop2006}.
+
+Một kỹ thuật thường được dùng để kiểm soát hiện tượng overfitting như vậy là thêm một hạng tử phạt vào hàm lỗi nhằm ngăn các hệ số đạt giá trị quá lớn.
+
+Hàm lỗi thường dùng:
+\[
+E(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^{N}\{y(x_n,\mathbf{w}) - t_n\}^2
+\]
+
+\subsection{L2 Regularization (Weight Decay/Ridge Regression)}
+
+Thêm tổng bình phương các trọng số vào hàm lỗi, ép các trọng số tiến về 0 nhưng không bằng 0. Phạt chuẩn tham số \(L^2\) thường được gọi là \textbf{suy giảm trọng số (weight decay)} là một trong những dạng phạt chuẩn tham số đơn giản và phổ biến nhất. Chiến lược chính quy hóa này đưa các trọng số tiến gần hơn về gốc tọa độ bằng cách thêm một số hạng chính quy hóa \(\Omega(\theta) = \|\mathbf{w}\|^2\) vào hàm mục tiêu. Trong các cộng đồng học thuật khác, chính quy hóa \(L^2\) còn được biết đến với tên gọi \textbf{hồi quy ridge (ridge regression)} hoặc \textbf{chính quy hóa Tikhonov (Tikhonov regularization)} \cite[p.~233]{Goodfellow2016}\cite{Bishop2006}.
+
+Hàm lỗi được sửa đổi:
+\[
+\widetilde{E}(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^{N}\{y(x_n,\mathbf{w}) - t_n\}^2 + \frac{\lambda}{2}\|\mathbf{w}\|^2
+\]
+trong đó:
+\[
+\|\mathbf{w}\|^2 = \mathbf{w}^T\mathbf{w} = w_0^2 + w_1^2 + \cdots + w_M^2
+\]
+và \(\lambda\) là hệ số điều chỉnh tầm quan trọng giữa số hạng lỗi và số hạng chính quy hóa.
+
+\textbf{Lưu ý:} Thông thường, hệ số \(w_0\) (bias) được bỏ qua khỏi bộ chính quy hóa vì nếu đưa vào, kết quả sẽ phụ thuộc vào cách chọn gốc tọa độ cho biến mục tiêu. Tuy nhiên, cũng có thể đưa \(w_0\) vào nhưng với hệ số chính quy hóa riêng.
+
+\paragraph{Ví dụ:}
+Đồ thị của một tập dữ liệu huấn luyện gồm \(N = 10\) điểm, được biểu diễn bằng các hình tròn màu xanh lam, mỗi điểm bao gồm một quan sát của biến đầu vào \(x\) cùng với biến mục tiêu \(t\) tương ứng. Đường cong màu xanh lá thể hiện hàm \(\sin(2\pi x)\) được sử dụng để sinh ra dữ liệu. Mục tiêu của chúng ta là dự đoán giá trị của \(t\) cho một giá trị \(x\) mới mà không biết trước đường cong màu xanh lá.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\textwidth]{image2.png}
+\caption{Dữ liệu huấn luyện và hàm sin gốc}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{image3.png}
+\caption{Kết quả khớp đa thức bậc 9 với L2 regularization}
+\end{figure}
+
+Hình cho thấy kết quả khớp đa thức bậc \(M = 9\) sử dụng hàm lỗi chính quy hóa \(L^2\). Với giá trị \(\ln\lambda = -18\), hiện tượng over-fitting đã được kiểm soát và thu được biểu diễn gần với hàm \(\sin(2\pi x)\) hơn nhiều. Tuy nhiên, nếu \(\lambda\) quá lớn (ví dụ \(\ln\lambda = 0\)) thì kết quả khớp kém.
+
+\subsection{L1 Regularization (Lasso)}
+
+Thêm tổng giá trị tuyệt đối của các trọng số. Phương pháp này có thể triệt tiêu một số trọng số về đúng bằng 0, giúp lựa chọn đặc trưng (feature selection). Về mặt hình thức, chính quy hóa \(L^1\) trên tham số mô hình \(\mathbf{w}\) được định nghĩa là:
+\[
+\Omega(\theta) = \|\mathbf{w}\|_1 = \sum_{i} |w_i|
+\]
+Khi đó hàm lỗi sửa đổi:
+\[
+\widetilde{E}(\mathbf{w}) = \frac{1}{2}\sum_{n=1}^{N}\{y(x_n,\mathbf{w}) - t_n\}^2 + \alpha\sum_{i} |w_i|
+\]
+với \(\alpha > 0\) là siêu tham số điều khiển cường độ chính quy hóa  \cite[p.~236]{Goodfellow2016}\cite[p.~165]{Bishop2006}.
+
+\textbf{Điểm khác biệt quan trọng:} Khác với \(L^2\) có gradient phụ thuộc tuyến tính vào \(w_i\), \(L^1\) đóng góp một hằng số (có dấu) vào gradient, không tỷ lệ với độ lớn của \(w_i\). Điều này dẫn đến các nghiệm không có dạng đại số đẹp như trong \(L^2\) khi xấp xỉ bậc hai.
+
+\paragraph{Ứng dụng: Lựa chọn đặc trưng (Feature Selection)}
+Tính thưa của \(L^1\) (nhiều tham số có giá trị tối ưu bằng 0) được sử dụng rộng rãi như một cơ chế \textbf{lựa chọn đặc trưng}. Các trọng số bằng 0 cho biết những đặc trưng tương ứng có thể loại bỏ an toàn, giúp đơn giản hóa bài toán. Mô hình nổi tiếng nhất là \textbf{LASSO} (Least Absolute Shrinkage and Selection Operator) -- kết hợp phạt \(L^1\) với hồi quy tuyến tính và hàm chi phí bình phương tối thiểu.
+
+\section{Early Stopping (Dừng sớm)}
+
+Một phương pháp hiệu quả nhằm kiểm soát độ phức tạp của mô hình mà không cần sử dụng các kỹ thuật chính quy hóa tường minh là \textbf{dừng sớm (early stopping)}. Trong quá trình huấn luyện các mô hình phi tuyến, thuật toán tối ưu thường được thực hiện lặp lại nhằm giảm dần hàm lỗi trên tập huấn luyện. Đối với nhiều phương pháp tối ưu, chẳng hạn như gradient liên hợp, sai số trên tập huấn luyện có xu hướng giảm đơn điệu theo số lần lặp.
+
+Tuy nhiên, sai số trên một tập dữ liệu độc lập (gọi là tập kiểm chứng -- validation set) thường chỉ giảm trong giai đoạn đầu, sau đó bắt đầu tăng lên khi mô hình rơi vào hiện tượng overfitting. Do đó, quá trình huấn luyện nên được dừng lại tại thời điểm mà sai số trên tập kiểm chứng đạt giá trị nhỏ nhất \cite{Ying2019}\cite[p.~279]{Bishop2006}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{image4.png}
+\caption{Sai số huấn luyện và kiểm định theo số bước lặp (epoch)}
+\end{figure}
+
+Hình trên minh họa hành vi của lỗi tập huấn luyện (bên trái) và lỗi tập kiểm định (bên phải) trong một phiên huấn luyện điển hình, như một hàm của bước lặp, đối với tập dữ liệu hình sin. Mục tiêu đạt được hiệu suất tổng quát hóa tốt nhất gợi ý rằng việc huấn luyện nên được dừng tại điểm được chỉ ra bởi các đường đứt nét thẳng đứng, tương ứng với giá trị tối thiểu của lỗi tập kiểm định.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{image5.png}
+\caption{Đường cong học tập trên MNIST: lỗi log-âm khả năng}
+\end{figure}
+
+Đồ thị cho thấy các đường cong học tập thể hiện cách độ lỗi log-âm khả năng (negative log-likelihood) thay đổi theo thời gian (được chỉ ra bằng số lần lặp huấn luyện trên tập dữ liệu, hay epoch). Trong ví dụ này, chúng ta huấn luyện một mạng maxout trên MNIST. Quan sát thấy rằng hàm mục tiêu trên tập huấn luyện giảm đều đặn theo thời gian, nhưng độ lỗi trung bình trên tập kiểm định (validation set) cuối cùng bắt đầu tăng trở lại, tạo thành một đường cong hình chữ U bất đối xứng \cite{Ying2019}\cite[p.~240]{Goodfellow2016}.
+
+\section{Mở rộng tập dữ liệu (Data Augmentation)}
+
+Trong học máy, hiệu năng của mô hình không chỉ phụ thuộc vào thuật toán mà còn chịu ảnh hưởng lớn từ chất lượng và số lượng dữ liệu huấn luyện, đặc biệt trong các bài toán học có giám sát. Quá trình huấn luyện thực chất là việc điều chỉnh các tham số của mô hình nhằm đạt được sự cân bằng giữa độ chính xác trên tập huấn luyện và khả năng tổng quát hóa, từ đó hạn chế hiện tượng overfitting cũng như underfitting.
+
+Để thực hiện việc điều chỉnh này một cách hiệu quả, mô hình cần một lượng dữ liệu đủ lớn. Thông thường, số lượng mẫu cần thiết có xu hướng tăng theo độ phức tạp của mô hình (tức là số lượng tham số cần học). Do đó, việc mở rộng tập dữ liệu có thể cải thiện đáng kể độ chính xác dự đoán, đặc biệt đối với các mô hình phức tạp.
+
+Một kỹ thuật phổ biến để giải quyết vấn đề thiếu dữ liệu là mở rộng tập dữ liệu (data augmentation), trong đó các mẫu dữ liệu mới được tạo ra từ dữ liệu gốc thông qua các phép biến đổi như xoay, lật, thêm nhiễu, hoặc các phép xử lý khác. Phương pháp này đã được chứng minh là hiệu quả trong nhiều lĩnh vực như nhận dạng mẫu và xử lý ảnh, nhờ khả năng cải thiện năng lực tổng quát hóa của mô hình.
+
+Tuy nhiên, việc gia tăng kích thước dữ liệu cũng làm tăng thời gian huấn luyện. Bên cạnh đó, việc thu thập và gán nhãn dữ liệu mới thường tốn kém và đòi hỏi nhiều công sức. Vì vậy, thay vì thu thập dữ liệu hoàn toàn mới, người ta thường tận dụng dữ liệu hiện có để tạo ra các mẫu mới \cite{Ying2019}\cite{Goodfellow2016}.
+
+
+Có bốn hướng tiếp cận chính:
+\begin{itemize}
+\item Thu thập thêm dữ liệu huấn luyện mới
+\item Thêm nhiễu ngẫu nhiên vào dữ liệu hiện có
+\item Tái tạo dữ liệu từ tập hiện có thông qua các phép biến đổi
+\item Sinh dữ liệu mới dựa trên phân phối của tập dữ liệu ban đầu
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{image6.png}
+\caption{Minh họa làm cong tổng hợp (synthetic warping) chữ số viết tay}
+\end{figure}
+
+Trong nhận dạng chữ viết tay, việc dịch chuyển nhẹ các hình ảnh chữ số (translation invariance) giúp mô hình tổng quát hóa tốt hơn. Hình ảnh gốc được hiển thị bên trái. Ở bên phải, hàng trên cùng cho thấy ba ví dụ về chữ số bị làm cong, với các trường dịch chuyển tương ứng được hiển thị ở hàng dưới cùng. Các trường dịch chuyển này được tạo ra bằng cách lấy mẫu các độ dịch chuyển ngẫu nhiên $\Delta x, \Delta y \in (0,1)$ tại mỗi pixel và sau đó làm mịn bằng tích chập với các Gauss có độ rộng lần lượt là 0.01, 30 và 60 \cite[p.~281]{Bishop2006}\cite{Goodfellow2016}.
+
+
+\section{Validation và Cross-Validation (Kiểm chứng chéo)}
+
+Để đánh giá và lựa chọn mô hình một cách khách quan, người ta thường sử dụng tập kiểm định (validation set) nhằm ước lượng sai số trên dữ liệu chưa từng thấy trong quá trình huấn luyện. Về bản chất, tập kiểm định được tạo ra bằng cách tách một phần dữ liệu ra khỏi tập ban đầu và không sử dụng phần này trong quá trình huấn luyện mô hình. Nhờ đó, sai số đo được trên tập kiểm định có thể xem như một xấp xỉ của sai số ngoài mẫu (out-of-sample error).
+
+Mặc dù có vai trò tương tự tập kiểm tra (test set), tập kiểm định vẫn có một điểm khác biệt quan trọng. Cụ thể, tập kiểm định không tham gia trực tiếp vào quá trình huấn luyện, nhưng lại được sử dụng để đưa ra các quyết định trong quá trình học, chẳng hạn như lựa chọn siêu tham số hoặc mô hình tối ưu. Do đó, một khi dữ liệu đã ảnh hưởng đến quá trình học, nó không còn được xem là tập kiểm tra đúng nghĩa. Tuy nhiên, mức độ ảnh hưởng này thường nhỏ, nên tập kiểm định vẫn cung cấp một ước lượng khá tin cậy cho sai số tổng quát hóa.
+
+Về cách thực hiện, giả sử tập dữ liệu ban đầu $D$ được chia thành hai phần: tập huấn luyện $D_{\text{train}}$ gồm $N-K$ mẫu và tập kiểm định $D_{\text{val}}$ gồm $K$ mẫu. Việc phân chia này có thể được thực hiện bằng nhiều cách khác nhau, miễn là không phụ thuộc vào giá trị của dữ liệu; phổ biến nhất là chọn ngẫu nhiên $N-K$ mẫu cho huấn luyện và sử dụng phần còn lại cho kiểm định.
+
+Bên cạnh đó, kiểm chứng chéo (cross-validation) là một mở rộng của phương pháp trên, trong đó dữ liệu được chia thành nhiều phần và luân phiên sử dụng các phần này cho huấn luyện và kiểm định. Cách tiếp cận này giúp tận dụng tối đa dữ liệu và cung cấp ước lượng ổn định hơn về hiệu năng của mô hình \cite[p.~138]{AbuMostafa2012}.
+
+
+\subsection{K-fold Cross-Validation}
+Trong nhiều bài toán thực tế, dữ liệu thường bị hạn chế, do đó cần tận dụng tối đa dữ liệu sẵn có cho quá trình huấn luyện. Tuy nhiên, nếu tập kiểm định quá nhỏ, ước lượng hiệu năng mô hình sẽ trở nên kém ổn định và dễ bị nhiễu. Để giải quyết vấn đề này, phương pháp \textbf{K-fold Cross-Validation} được sử dụng.
+
+Cụ thể, tập dữ liệu được chia thành $S$ phần (fold) có kích thước xấp xỉ bằng nhau. Ở mỗi lần lặp, một phần được dùng làm tập kiểm định, trong khi $S-1$ phần còn lại được dùng để huấn luyện. Quá trình này được lặp lại $S$ lần sao cho mỗi phần dữ liệu đều được sử dụng một lần làm tập kiểm định. Nhờ đó, phương pháp này cho phép sử dụng tới $\frac{S-1}{S}$ dữ liệu cho huấn luyện trong mỗi lần lặp, đồng thời tận dụng toàn bộ dữ liệu để đánh giá hiệu năng mô hình.
+
+Trong trường hợp dữ liệu đặc biệt khan hiếm, có thể sử dụng biến thể \textbf{Leave-One-Out Cross-Validation (LOOCV)}, tương ứng với $S = N$ (với $N$ là số lượng mẫu). Khi đó, mỗi lần lặp chỉ giữ lại đúng một mẫu để kiểm định và sử dụng toàn bộ phần còn lại để huấn luyện.
+
+Mặc dù mang lại ước lượng đáng tin cậy hơn, cross-validation cũng tồn tại một số hạn chế. Trước hết, chi phí tính toán tăng lên đáng kể do mô hình phải được huấn luyện lại $S$ lần. Điều này đặc biệt tốn kém đối với các mô hình có thời gian huấn luyện lớn. Ngoài ra, trong trường hợp mô hình có nhiều siêu tham số (ví dụ nhiều hệ số regularization), việc thử tất cả các tổ hợp tham số có thể dẫn đến số lần huấn luyện tăng theo cấp số nhân, gây khó khăn về mặt tính toán.
+
+Do đó, một hướng tiếp cận lý tưởng là xây dựng các tiêu chí đánh giá chỉ dựa trên dữ liệu huấn luyện, cho phép so sánh nhiều mô hình và siêu tham số trong một lần huấn luyện, đồng thời hạn chế sai lệch do overfitting \cite[p.~53]{Bishop2006}\cite{Hastie2009}.
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{image7.png}
+\caption{Kỹ thuật kiểm định chéo S-fold (S=4)}
+\end{figure}
+
+Kỹ thuật kiểm định chéo S-lần (S-fold cross-validation), được minh họa ở đây cho trường hợp S=4, bao gồm việc lấy dữ liệu có sẵn và phân chia nó thành S nhóm (trong trường hợp đơn giản nhất, các nhóm có kích thước bằng nhau). Sau đó, S-1 nhóm được sử dụng để huấn luyện một tập hợp các mô hình, và các mô hình này được đánh giá trên nhóm còn lại. Quy trình này được lặp lại cho tất cả S lựa chọn khả dĩ cho nhóm bị giữ lại, được chỉ ra ở đây bằng các khối màu đỏ, và các điểm hiệu suất từ S lần chạy sau đó được lấy trung bình.
+
+\section{Lấy thêm dữ liệu (Data Collection)}
+
+Một trong những cách hiệu quả nhất để giảm hiện tượng overfitting là tăng kích thước tập dữ liệu huấn luyện. Tuy nhiên, việc quyết định có nên thu thập thêm dữ liệu hay không cần dựa trên việc đánh giá hiệu năng của mô hình trên cả tập huấn luyện và tập kiểm tra.
+
+Trước hết, cần xem xét hiệu năng trên tập huấn luyện. Nếu mô hình hoạt động kém trên tập này, điều đó cho thấy thuật toán chưa khai thác tốt dữ liệu hiện có. Trong trường hợp này, việc thu thập thêm dữ liệu thường không mang lại hiệu quả. Thay vào đó, nên cải thiện mô hình bằng cách tăng độ phức tạp (ví dụ: thêm lớp hoặc số lượng neuron), hoặc tinh chỉnh các siêu tham số như tốc độ học. Nếu các mô hình phức tạp hơn và thuật toán tối ưu tốt hơn vẫn không cải thiện kết quả, thì nguyên nhân có thể nằm ở chất lượng dữ liệu, chẳng hạn dữ liệu nhiễu hoặc thiếu các đặc trưng quan trọng. Khi đó, cần xem xét thu thập lại dữ liệu sạch hơn hoặc bổ sung thêm đặc trưng phù hợp.
+
+Ngược lại, nếu mô hình đạt hiệu năng tốt trên tập huấn luyện, bước tiếp theo là đánh giá trên tập kiểm tra. Nếu kết quả trên tập kiểm tra cũng tốt, mô hình đã đạt yêu cầu và không cần thay đổi thêm. Tuy nhiên, nếu hiệu năng trên tập kiểm tra kém hơn đáng kể so với tập huấn luyện (dấu hiệu của overfitting), thì việc thu thập thêm dữ liệu là một trong những giải pháp hiệu quả nhất.
+
+Khi cân nhắc mở rộng dữ liệu, cần xem xét các yếu tố như chi phí, tính khả thi, cũng như hiệu quả so với các phương pháp khác (ví dụ: regularization hoặc giảm độ phức tạp mô hình). Trong một số lĩnh vực như các hệ thống internet quy mô lớn, việc thu thập dữ liệu thường khả thi và mang lại hiệu quả cao. Ngược lại, trong các lĩnh vực như y tế, việc thu thập dữ liệu có thể tốn kém hoặc khó thực hiện.
+
+Nếu không thể thu thập thêm dữ liệu, có thể áp dụng các giải pháp thay thế như giảm độ phức tạp mô hình hoặc tăng cường regularization (ví dụ: weight decay, dropout). Tuy nhiên, nếu sau khi tinh chỉnh các kỹ thuật này mà khoảng cách giữa lỗi huấn luyện và lỗi kiểm tra vẫn lớn, thì việc bổ sung dữ liệu vẫn là hướng đi cần thiết.
+
+Ngoài ra, khi quyết định thu thập thêm dữ liệu, cần xác định số lượng dữ liệu cần thiết. Một cách tiếp cận hữu ích là xây dựng đường cong học (learning curve) thể hiện mối quan hệ giữa kích thước tập huấn luyện và sai số tổng quát hóa. Dựa trên đó, có thể ước lượng lượng dữ liệu bổ sung cần thiết để đạt được mức hiệu năng mong muốn. Thực tế cho thấy, việc chỉ tăng một lượng nhỏ dữ liệu thường không mang lại cải thiện đáng kể; do đó, nên thử nghiệm với các mức dữ liệu tăng theo cấp số nhân (ví dụ: gấp đôi sau mỗi lần thử nghiệm).
+
+Trong trường hợp không thể mở rộng dữ liệu, việc cải thiện hiệu năng mô hình sẽ phụ thuộc vào việc phát triển các thuật toán học tốt hơn, đây thường là hướng nghiên cứu chuyên sâu hơn là áp dụng thực tiễn \cite{Bishop2006}\cite{Goodfellow2016}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{image8.png}
+\caption{Ảnh hưởng của kích thước tập dữ liệu lên overfitting (đa thức bậc 9)}
+\end{figure}
+
+Đồ thị của các nghiệm thu được bằng cách tối thiểu hóa hàm lỗi tổng bình phương sử dụng đa thức bậc M=9 cho N=15 điểm dữ liệu (đồ thị bên trái) và N=100 điểm dữ liệu (đồ thị bên phải). Chúng ta thấy rằng việc tăng kích thước tập dữ liệu sẽ làm giảm vấn đề quá khớp (over-fitting).
+
