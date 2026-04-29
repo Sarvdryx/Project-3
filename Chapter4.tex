@@ -41,8 +41,6 @@ Hiện tượng này phản ánh một quá trình chuyển tiếp:
 
 Theo \cite[p.~221]{Hastie2009}, đây là hệ quả trực tiếp của việc thành phần variance tăng lên khi mô hình trở nên quá linh hoạt.
 
----
-
 \section{Phân loại noise trong học máy}
 
 \subsection{Hai loại noise cơ bản}
@@ -61,7 +59,6 @@ Sự phân biệt này mang ý nghĩa quan trọng vì:
     \item Cách xử lý cũng khác nhau
 \end{itemize}
 
----
 
 \section{Stochastic noise (nhiễu ngẫu nhiên)}
 
@@ -87,8 +84,6 @@ E[\epsilon(x)] = 0, \quad Var(\epsilon(x)) = \sigma^2
 
 Theo \cite[pp.~46--48]{Bishop2006}, giả định này phản ánh thực tế rằng dữ liệu luôn chứa sai số không thể quan sát trực tiếp.
 
----
-
 \subsubsection{Bản chất thống kê của stochastic noise}
 
 \begin{itemize}
@@ -100,8 +95,6 @@ Theo \cite[pp.~46--48]{Bishop2006}, giả định này phản ánh thực tế r
 \paragraph{Ý nghĩa}
 
 Stochastic noise đại diện cho những yếu tố không thể kiểm soát trong dữ liệu, do đó nó thiết lập giới hạn tối thiểu của sai số dự đoán.
-
----
 
 \subsection{Nguồn gốc của stochastic noise}
 
@@ -115,8 +108,6 @@ Stochastic noise đại diện cho những yếu tố không thể kiểm soát 
 \end{itemize}
 
 Theo \cite[pp.~33--35]{Hastie2009}, ngay cả trong các hệ thống xác định, việc thiếu thông tin cũng tạo ra noise hiệu dụng.
-
----
 
 \subsection{Cơ chế gây overfitting}
 
@@ -133,8 +124,6 @@ Khi mô hình có độ phức tạp cao, nó có thể:
     \item Sai số huấn luyện thấp
     \item Sai số kiểm tra cao
 \end{itemize}
-
----
 
 \subsubsection{Liên hệ với bias--variance}
 
@@ -153,16 +142,12 @@ E[(g(x) - y)^2] = Bias^2 + Variance + Noise
 
 Theo \cite{Domingos2000}, noise thiết lập giới hạn dưới của hiệu suất học máy.
 
----
-
 \subsection{Hệ quả học thuật}
 
 \begin{itemize}
     \item Stochastic noise làm tăng variance
     \item Khi kết hợp với mô hình phức tạp $\rightarrow$ overfitting mạnh
 \end{itemize}
-
----
 
 \section{Deterministic noise (nhiễu xác định)}
 
@@ -178,8 +163,6 @@ Deterministic noise được định nghĩa là:
 
 Trong đó $h^*(x)$ là mô hình tốt nhất trong không gian giả thuyết $H$ \cite{abumostafa2012}.
 
----
-
 \subsubsection{Bản chất của deterministic noise}
 
 \begin{itemize}
@@ -191,8 +174,6 @@ Trong đó $h^*(x)$ là mô hình tốt nhất trong không gian giả thuyết 
 \paragraph{Ý nghĩa}
 
 Deterministic noise phản ánh sự không phù hợp giữa mô hình và dữ liệu.
-
----
 
 \subsection{Nguồn gốc}
 
@@ -209,8 +190,6 @@ Deterministic noise xuất hiện khi:
 
 Đa thức bậc thấp không thể xấp xỉ hàm bậc cao $\rightarrow$ sai lệch có hệ thống.
 
----
-
 \subsection{Liên hệ với bias}
 
 Theo \cite{Geman1992}:
@@ -219,8 +198,6 @@ Theo \cite{Geman1992}:
     \item Deterministic noise gắn với bias
     \item Bias cao $\rightarrow$ sai lệch lớn
 \end{itemize}
-
----
 
 \subsection{Cơ chế gây overfitting}
 
@@ -231,8 +208,6 @@ Khi dữ liệu hữu hạn:
     \item Mô hình cố gắng fit phần sai lệch
     \item Dẫn đến overfitting
 \end{itemize}
-
----
 
 \subsubsection{Phân tích sâu}
 
@@ -245,8 +220,6 @@ Ngay cả khi không có stochastic noise:
 \begin{quote}
 Overfitting không chỉ do ngẫu nhiên, mà còn do sai mô hình
 \end{quote}
-
----
 
 \section{So sánh hai loại noise}
 
@@ -267,8 +240,6 @@ Loại bỏ được & Không & Có \\
 \caption{So sánh hai loại noise}
 \end{table}
 
----
-
 \section{Tác động tổng hợp của noise}
 
 \subsection{Ảnh hưởng của dữ liệu}
@@ -278,8 +249,6 @@ Loại bỏ được & Không & Có \\
     \item Noise tăng $\rightarrow$ overfitting tăng
 \end{itemize}
 
----
-
 \subsection{Giải thích học thuật}
 
 Theo \cite[pp.~36--38]{Hastie2009}:
@@ -288,8 +257,6 @@ Theo \cite[pp.~36--38]{Hastie2009}:
     \item Dữ liệu nhiều giúp giảm variance
     \item Noise làm tăng độ bất định
 \end{itemize}
-
----
 
 \section{Kết luận}
 
