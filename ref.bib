@@ -86,23 +86,6 @@
   note         = {California Institute of Technology}
 }
 
-@article{Geman1992,
-  author  = {Stuart Geman and Elie Bienenstock and Ren{\'e} Doursat},
-  title   = {Neural Networks and the Bias/Variance Dilemma},
-  journal = {Neural Computation},
-  volume  = {4},
-  number  = {1},
-  pages   = {1--58},
-  year    = {1992}
-}
-
-@article{Domingos2000,
-  author  = {Pedro Domingos},
-  title   = {A Unified Bias-Variance Decomposition},
-  journal = {AAAI Conference on Artificial Intelligence},
-  year    = {2000}
-}
-
 @book{AbuMostafa2012,
   author    = {Yaser S. Abu-Mostafa and Malik Magdon-Ismail and Hsuan-Tien Lin},
   title     = {Learning From Data: A Short Course},
@@ -115,4 +98,70 @@
   title     = {Deep Learning},
   publisher = {MIT Press},
   year      = {2016}
+}
+
+@misc{wojtowytsch2021stochasticgradientdescentnoise,
+      title={Stochastic gradient descent with noise of machine learning type. Part II: Continuous time analysis}, 
+      author={Stephan Wojtowytsch},
+      year={2021},
+      eprint={2106.02588},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2106.02588}, 
+}
+
+@article{poulinakis2023noisy_sparse,
+  author = {Poulinakis, Konstantinos and Drikakis, Dimitris and Kokkinakis, Ioannis W. and Spottswood, Scott M.},
+  title = {Machine-Learning Methods on Noisy and Sparse Data},
+  journal = {Mathematics},
+  year = {2023},
+  volume = {11},
+  number = {1},
+  pages = {236},
+  doi = {10.3390/math11010236}
+}
+
+@InProceedings{pmlr-v119-wu20c,
+  title = 	 {On the Noisy Gradient Descent that Generalizes as {SGD}},
+  author =       {Wu, Jingfeng and Hu, Wenqing and Xiong, Haoyi and Huan, Jun and Braverman, Vladimir and Zhu, Zhanxing},
+  booktitle = 	 {Proceedings of the 37th International Conference on Machine Learning},
+  pages = 	 {10367--10376},
+  year = 	 {2020},
+  editor = 	 {III, Hal Daumé and Singh, Aarti},
+  volume = 	 {119},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {13--18 Jul},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v119/wu20c/wu20c.pdf},
+  url = 	 {https://proceedings.mlr.press/v119/wu20c.html},
+  abstract = 	 {The gradient noise of SGD is considered to play a central role in the observed strong generalization abilities of deep learning. While past studies confirm that the magnitude and the covariance structure of gradient noise are critical for regularization, it remains unclear whether or not the class of noise distributions is important. In this work we provide negative results by showing that noises in classes different from the SGD noise can also effectively regularize gradient descent. Our finding is based on a novel observation on the structure of the SGD noise: it is the multiplication of the gradient matrix and a sampling noise that arises from the mini-batch sampling procedure. Moreover, the sampling noises unify two kinds of gradient regularizing noises that belong to the Gaussian class: the one using (scaled) Fisher as covariance and the one using the gradient covariance of SGD as covariance. Finally, thanks to the flexibility of choosing noise class, an algorithm is proposed to perform noisy gradient descent that generalizes well, the variant of which even benefits large batch SGD training without hurting generalization.}
+}
+
+@misc{keskar2017largebatchtrainingdeeplearning,
+      title={On Large-Batch Training for Deep Learning: Generalization Gap and Sharp Minima}, 
+      author={Nitish Shirish Keskar and Dheevatsa Mudigere and Jorge Nocedal and Mikhail Smelyanskiy and Ping Tak Peter Tang},
+      year={2017},
+      eprint={1609.04836},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/1609.04836}, 
+}
+
+@inproceedings{Domingos,
+author = {Domingos, Pedro},
+year = {2000},
+month = {01},
+pages = {231-238},
+title = {A Unifeid Bias-Variance Decomposition and its Applications.}
+}
+
+@article{Geman_1992,
+author = {Geman, Stuart and Bienenstock, Elie and Doursat, René},
+year = {1992},
+month = {01},
+pages = {1-58},
+title = {Neural Networks and the Bias/Variance Dilemma},
+volume = {4},
+journal = {Neural Computation},
+doi = {10.1162/neco.1992.4.1.1}
 }
