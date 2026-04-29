@@ -5,10 +5,32 @@
   {Phần~\thechapter}{0pt}{\raggedright}
 
 
-\chapter{Mã nguồn và video demo}
+\chapter{Kết luận}
 
+Qua quá trình nghiên cứu và phân tích, có thể khẳng định rằng \textit{overfitting} (quá khớp) là một trong những thách thức quan trọng nhất trong lĩnh vực Machine Learning, ảnh hưởng trực tiếp đến hiệu quả và khả năng ứng dụng thực tế của các mô hình. Bản chất của vấn đề này nằm ở sự mất cân bằng giữa việc học từ dữ liệu huấn luyện và khả năng tổng quát hóa trên dữ liệu mới; khi mô hình quá tập trung vào việc giảm sai số huấn luyện, nó có xu hướng ghi nhớ cả những đặc điểm riêng lẻ hoặc nhiễu thay vì học được quy luật tổng quát.
+
+Dựa trên các nội dung đã trình bày, có thể rút ra các điểm mấu chốt sau:
+
+\section*{Nguyên nhân cốt lõi}
+
+\textit{Overfitting} phát sinh từ sự hiện diện của nhiễu ngẫu nhiên (\textit{stochastic noise}) do sai số đo lường hoặc các biến số không thể kiểm soát, và nhiễu xác định (\textit{deterministic noise}) do giới hạn về năng lực biểu diễn của tập giả thuyết so với hàm mục tiêu thực.
+
+\section*{Các yếu tố ảnh hưởng}
+
+Mức độ nghiêm trọng của \textit{overfitting} phụ thuộc chặt chẽ vào kích thước tập dữ liệu huấn luyện (dữ liệu càng nhỏ thì nguy cơ càng cao), độ phức tạp của mô hình so với lượng thông tin quan sát (tỷ lệ $p/n$), và các sai sót trong quy trình thực nghiệm như hiện tượng rò rỉ dữ liệu (\textit{data leakage}).
+
+\section*{Giải pháp khắc phục}
+
+Để xây dựng một mô hình bền vững, cần áp dụng linh hoạt các kỹ thuật điều tiết và kiểm soát như sau:
 
 \begin{itemize}
-    \item GitHub Repository: \textbf{\url{https://github.com/Sarvdryx/futoshiki}}
-    \item Video Demo: \textbf{\url{https://www.youtube.com/watch?v=te-k0NZmsiw}}
+    \item \textbf{Regularization (L1, L2):} Áp đặt các ràng buộc lên tham số để ưu tiên các mô hình đơn giản hơn, từ đó hạn chế hiện tượng học thuộc nhiễu.
+    
+    \item \textbf{Early Stopping:} Dừng quá trình huấn luyện tại thời điểm sai số trên tập kiểm chứng đạt giá trị tối ưu nhằm tránh việc mô hình tiếp tục ghi nhớ dữ liệu huấn luyện.
+    
+    \item \textbf{Data Augmentation và Data Collection:} Mở rộng quy mô cũng như nâng cao chất lượng dữ liệu giúp mô hình học rõ hơn các quy luật tổng quát thay vì phụ thuộc vào các mẫu riêng lẻ.
+    
+    \item \textbf{Cross-Validation:} Sử dụng các phương pháp kiểm chứng chéo để đánh giá hiệu suất mô hình một cách khách quan, ổn định và đáng tin cậy hơn.
 \end{itemize}
+
+Tóm lại, việc nhận diện và kiểm soát \textit{overfitting} không chỉ đơn thuần là một kỹ thuật tối ưu hóa mà còn là một tư duy cốt lõi trong quá trình xây dựng mô hình học máy. Một mô hình thành công không phải là mô hình đạt sai số thấp nhất trên tập huấn luyện, mà là mô hình có khả năng tổng quát hóa tốt nhất trên những dữ liệu chưa từng xuất hiện, từ đó mang lại giá trị dự báo chính xác và bền vững trong các ứng dụng thực tế.

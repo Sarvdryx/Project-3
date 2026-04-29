@@ -203,21 +203,21 @@ Khi thay mô hình tuyến tính bằng đa thức bậc cao hơn, deterministic
 Kết quả thực nghiệm này cho thấy deterministic noise và stochastic noise thường cùng tồn tại. Việc giảm một loại sai số bằng cách tăng độ phức tạp mô hình có thể làm gia tăng loại sai số còn lại nếu không được kiểm soát hợp lý.
 
 
-\subsection{Cách giảm ảnh hưởng của deterministic noise}
-\begin{itemize}
-    \item Lựa chọn tập giả thuyết phù hợp hơn với dữ liệu.
-    \item Thiết kế đặc trưng tốt hơn để mô hình đơn giản vẫn học được quy luật.
-    \item Sử dụng validation để chọn độ phức tạp phù hợp.
-    \item Áp dụng regularization nhằm kiểm soát khả năng khớp quá mức \cite{Ying2019}.
-\end{itemize}
+% \subsection{Cách giảm ảnh hưởng của deterministic noise}
+% \begin{itemize}
+%     \item Lựa chọn tập giả thuyết phù hợp hơn với dữ liệu.
+%     \item Thiết kế đặc trưng tốt hơn để mô hình đơn giản vẫn học được quy luật.
+%     \item Sử dụng validation để chọn độ phức tạp phù hợp.
+%     \item Áp dụng regularization nhằm kiểm soát khả năng khớp quá mức \cite{Ying2019}.
+% \end{itemize}
 
-\subsection{Nhận xét}
-\begin{itemize}
-    \item Không phải mọi sai số đều đến từ dữ liệu nhiễu; nhiều trường hợp xuất phát từ việc chọn mô hình chưa phù hợp.
-    \item Trong thực tế, deterministic noise gần như luôn tồn tại vì hàm mục tiêu thật thường không quan sát trực tiếp được.
-    \item Mô hình phức tạp hơn chưa chắc tốt hơn nếu dữ liệu không đủ lớn.
-\end{itemize}
+% \subsection{Nhận xét}
+% \begin{itemize}
+%     \item Không phải mọi sai số đều đến từ dữ liệu nhiễu; nhiều trường hợp xuất phát từ việc chọn mô hình chưa phù hợp.
+%     \item Trong thực tế, deterministic noise gần như luôn tồn tại vì hàm mục tiêu thật thường không quan sát trực tiếp được.
+%     \item Mô hình phức tạp hơn chưa chắc tốt hơn nếu dữ liệu không đủ lớn.
+% \end{itemize}
 
-\subsection{Kết luận}
+% \subsection{Kết luận}
 
-Deterministic noise là dạng sai số phát sinh do giới hạn biểu diễn của mô hình. Khi mô hình cố gắng giảm sai số huấn luyện bằng cách khớp cả phần sai lệch này, khả năng tổng quát hóa có thể suy giảm và dẫn đến overfitting. Vì vậy, việc cân bằng giữa độ phức tạp mô hình, dữ liệu huấn luyện và các kỹ thuật kiểm soát như validation hay regularization giữ vai trò quan trọng trong xây dựng hệ thống học máy hiệu quả.
+% Deterministic noise là dạng sai số phát sinh do giới hạn biểu diễn của mô hình. Khi mô hình cố gắng giảm sai số huấn luyện bằng cách khớp cả phần sai lệch này, khả năng tổng quát hóa có thể suy giảm và dẫn đến overfitting. Vì vậy, việc cân bằng giữa độ phức tạp mô hình, dữ liệu huấn luyện và các kỹ thuật kiểm soát như validation hay regularization giữ vai trò quan trọng trong xây dựng hệ thống học máy hiệu quả.
