@@ -136,11 +136,11 @@ Bên cạnh đó, kiểm chứng chéo (cross-validation) là một mở rộng 
 \subsection{K-fold Cross-Validation}
 Trong nhiều bài toán thực tế, dữ liệu thường bị hạn chế, do đó cần tận dụng tối đa dữ liệu sẵn có cho quá trình huấn luyện. Tuy nhiên, nếu tập kiểm định quá nhỏ, ước lượng hiệu năng mô hình sẽ trở nên kém ổn định và dễ bị nhiễu. Để giải quyết vấn đề này, phương pháp \textbf{K-fold Cross-Validation} được sử dụng.
 
-Cụ thể, tập dữ liệu được chia thành $S$ phần (fold) có kích thước xấp xỉ bằng nhau. Ở mỗi lần lặp, một phần được dùng làm tập kiểm định, trong khi $S-1$ phần còn lại được dùng để huấn luyện. Quá trình này được lặp lại $S$ lần sao cho mỗi phần dữ liệu đều được sử dụng một lần làm tập kiểm định. Nhờ đó, phương pháp này cho phép sử dụng tới $\frac{S-1}{S}$ dữ liệu cho huấn luyện trong mỗi lần lặp, đồng thời tận dụng toàn bộ dữ liệu để đánh giá hiệu năng mô hình.
+Cụ thể, tập dữ liệu được chia thành $K$ phần (fold) có kích thước xấp xỉ bằng nhau. Ở mỗi lần lặp, một phần được dùng làm tập kiểm định, trong khi $K-1$ phần còn lại được dùng để huấn luyện. Quá trình này được lặp lại $K$ lần sao cho mỗi phần dữ liệu đều được sử dụng một lần làm tập kiểm định. Nhờ đó, phương pháp này cho phép sử dụng tới $\frac{K-1}{K}$ dữ liệu cho huấn luyện trong mỗi lần lặp, đồng thời tận dụng toàn bộ dữ liệu để đánh giá hiệu năng mô hình.
 
-Trong trường hợp dữ liệu đặc biệt khan hiếm, có thể sử dụng biến thể \textbf{Leave-One-Out Cross-Validation (LOOCV)}, tương ứng với $S = N$ (với $N$ là số lượng mẫu). Khi đó, mỗi lần lặp chỉ giữ lại đúng một mẫu để kiểm định và sử dụng toàn bộ phần còn lại để huấn luyện.
+Trong trường hợp dữ liệu đặc biệt khan hiếm, có thể sử dụng biến thể \textbf{Leave-One-Out Cross-Validation (LOOCV)}, tương ứng với $K = N$ (với $N$ là số lượng mẫu). Khi đó, mỗi lần lặp chỉ giữ lại đúng một mẫu để kiểm định và sử dụng toàn bộ phần còn lại để huấn luyện.
 
-Mặc dù mang lại ước lượng đáng tin cậy hơn, cross-validation cũng tồn tại một số hạn chế. Trước hết, chi phí tính toán tăng lên đáng kể do mô hình phải được huấn luyện lại $S$ lần. Điều này đặc biệt tốn kém đối với các mô hình có thời gian huấn luyện lớn. Ngoài ra, trong trường hợp mô hình có nhiều siêu tham số (ví dụ nhiều hệ số regularization), việc thử tất cả các tổ hợp tham số có thể dẫn đến số lần huấn luyện tăng theo cấp số nhân, gây khó khăn về mặt tính toán.
+Mặc dù mang lại ước lượng đáng tin cậy hơn, cross-validation cũng tồn tại một số hạn chế. Trước hết, chi phí tính toán tăng lên đáng kể do mô hình phải được huấn luyện lại $K$ lần. Điều này đặc biệt tốn kém đối với các mô hình có thời gian huấn luyện lớn. Ngoài ra, trong trường hợp mô hình có nhiều siêu tham số (ví dụ nhiều hệ số regularization), việc thử tất cả các tổ hợp tham số có thể dẫn đến số lần huấn luyện tăng theo cấp số nhân, gây khó khăn về mặt tính toán.
 
 Do đó, một hướng tiếp cận lý tưởng là xây dựng các tiêu chí đánh giá chỉ dựa trên dữ liệu huấn luyện, cho phép so sánh nhiều mô hình và siêu tham số trong một lần huấn luyện, đồng thời hạn chế sai lệch do overfitting \cite[p.~53]{Bishop2006}\cite{Hastie2009}.
 
@@ -151,7 +151,7 @@ Do đó, một hướng tiếp cận lý tưởng là xây dựng các tiêu ch�
 \caption{Kỹ thuật kiểm định chéo S-fold (S=4)}
 \end{figure}
 
-Kỹ thuật kiểm định chéo S-lần (S-fold cross-validation), được minh họa ở đây cho trường hợp S=4, bao gồm việc lấy dữ liệu có sẵn và phân chia nó thành S nhóm (trong trường hợp đơn giản nhất, các nhóm có kích thước bằng nhau). Sau đó, S-1 nhóm được sử dụng để huấn luyện một tập hợp các mô hình, và các mô hình này được đánh giá trên nhóm còn lại. Quy trình này được lặp lại cho tất cả S lựa chọn khả dĩ cho nhóm bị giữ lại, được chỉ ra ở đây bằng các khối màu đỏ, và các điểm hiệu suất từ S lần chạy sau đó được lấy trung bình.
+Kỹ thuật kiểm định chéo K-lần (K-fold cross-validation), được minh họa ở đây cho trường hợp K=4, bao gồm việc lấy dữ liệu có sẵn và phân chia nó thành K nhóm (trong trường hợp đơn giản nhất, các nhóm có kích thước bằng nhau). Sau đó, K-1 nhóm được sử dụng để huấn luyện một tập hợp các mô hình, và các mô hình này được đánh giá trên nhóm còn lại. Quy trình này được lặp lại cho tất cả K lựa chọn khả dĩ cho nhóm bị giữ lại, được chỉ ra ở đây bằng các khối màu đỏ, và các điểm hiệu suất từ K lần chạy sau đó được lấy trung bình.
 
 \section{Lấy thêm dữ liệu (Data Collection)}
 
